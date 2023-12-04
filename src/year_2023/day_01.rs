@@ -1,4 +1,4 @@
-fn solve() -> (i32, i32) {
+pub(crate) fn solve() -> (i32, i32) {
     let input = include_str!("../../inputs/2023/01.txt");
 
     let literals = vec!["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"];

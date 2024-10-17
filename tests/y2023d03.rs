@@ -1,26 +1,32 @@
 use iter_tools::Itertools;
 
 pub(crate) fn solve() -> (i32, i32) {
-    let input = include_str!("../../inputs/2023/03.txt").lines()
+    let input = include_str!("../inputs/2023/03.txt")
+        .lines()
         .map(|line| line.chars().collect_vec())
         .collect_vec();
-    
+
     let dirs = vec![
-        (-1, -1), (0, -1), (1, -1),
-        (-1,  0),          (1,  0),
-        (-1,  1), (0,  1), (1,  1),
+        (-1, -1),
+        (0, -1),
+        (1, -1),
+        (-1, 0),
+        (1, 0),
+        (-1, 1),
+        (0, 1),
+        (1, 1),
     ];
 
     let parts = get_engine_parts(&input, &dirs);
     let solution_1 = parts.iter().map(|p| p.value).sum::<i32>();
     let solution_2 = get_gear_ratios(&parts).iter().sum::<i32>();
 
-    return (solution_1, solution_2);
+    (solution_1, solution_2)
 }
 
 struct EnginePart {
     value: i32,
-    symbol: char,
+    _symbol: char,
     symbol_pos: (i32, i32),
 }
 
@@ -28,13 +34,13 @@ impl EnginePart {
     fn new(value: i32, symbol: char, symbol_pos: (i32, i32)) -> Self {
         Self {
             value,
-            symbol,
+            _symbol: symbol,
             symbol_pos,
         }
     }
 }
 
-fn get_engine_parts(input: &Vec<Vec<char>>, directions: &Vec<(i32, i32)>) -> Vec<EnginePart> {
+fn get_engine_parts(input: &[Vec<char>], directions: &[(i32, i32)]) -> Vec<EnginePart> {
     let mut output = Vec::new();
     let mut value = 0;
     let mut has_symbol = false;
@@ -56,12 +62,12 @@ fn get_engine_parts(input: &Vec<Vec<char>>, directions: &Vec<(i32, i32)>) -> Vec
                             return true;
                         }
                         let x = input[new_row as usize][new_col as usize];
-                        if x == '.' || x.is_digit(10) {
+                        if x == '.' || x.is_ascii_digit() {
                             return true;
                         }
                         symbol = x;
                         symbol_pos = (new_col, new_row);
-                        return false;
+                        false
                     });
                 }
                 None => {
@@ -76,22 +82,22 @@ fn get_engine_parts(input: &Vec<Vec<char>>, directions: &Vec<(i32, i32)>) -> Vec
             }
         }
     }
-    return output;
+    output
 }
 
-fn get_gear_ratios(input: &Vec<EnginePart>) -> Vec<i32> {
+fn get_gear_ratios(input: &[EnginePart]) -> Vec<i32> {
     let mut output = Vec::new();
     for i in 0..input.len() {
-        for j in i+1..input.len() {
+        for j in i + 1..input.len() {
             if input[i].symbol_pos == input[j].symbol_pos {
                 output.push(input[i].value * input[j].value)
             }
         }
     }
-    return output;
+    output
 }
 
 #[test]
-fn test() {
+fn run() {
     assert_eq!(solve(), (525119, 76504829));
 }

@@ -5,7 +5,9 @@ pub trait Parser {
 }
 
 impl Parser for &str {
-    fn to_vec<T: FromStr>(self, separator: &str) -> Vec<T>{
-        self.split(separator).filter_map(|x| x.parse::<T>().ok()).collect()
+    fn to_vec<T: FromStr>(self, separator: &str) -> Vec<T> {
+        self.split(separator)
+            .filter_map(|x| x.parse::<T>().ok())
+            .collect()
     }
 }

@@ -1,20 +1,19 @@
 use std::str::FromStr;
 
-use crate::utils::conversions::Parser;
+use advent_of_code::utils::conversions::Parser;
 
 pub(crate) fn solve() -> (i32, i32) {
-    let input = include_str!("../../inputs/2023/02.txt").to_vec::<Game>("\n");
+    let input = include_str!("../inputs/2023/02.txt").to_vec::<Game>("\n");
 
-    let solution_1 = input.iter()
+    let solution_1 = input
+        .iter()
         .filter(|x| x.is_valid(&12, &13, &14))
         .map(|x| x.id)
         .sum::<i32>();
 
-    let solution_2 = input.iter()
-        .map(|x| x.power())
-        .sum::<i32>();
+    let solution_2 = input.iter().map(|x| x.power()).sum::<i32>();
 
-    return (solution_1, solution_2);
+    (solution_1, solution_2)
 }
 
 #[derive(Debug)]
@@ -51,7 +50,9 @@ impl FromStr for Game {
 
 impl Game {
     fn is_valid(&self, max_red: &i32, max_green: &i32, max_blue: &i32) -> bool {
-        self.sets.iter().all(|(r, g, b)| r <= max_red && g <= max_green && b <= max_blue)
+        self.sets
+            .iter()
+            .all(|(r, g, b)| r <= max_red && g <= max_green && b <= max_blue)
     }
 
     fn power(&self) -> i32 {
@@ -63,6 +64,6 @@ impl Game {
 }
 
 #[test]
-fn test() {
+fn run() {
     assert_eq!(solve(), (2149, 71274));
 }

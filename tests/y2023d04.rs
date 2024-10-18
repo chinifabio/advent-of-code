@@ -2,7 +2,7 @@ use std::str::FromStr;
 
 use advent_of_code::utils::conversions::Parser;
 
-pub(crate) fn solve() -> (u32, u32) {
+pub(crate) fn solve() -> Result<(u32, u32), ()> {
     let mut input = include_str!("../inputs/2023/04.txt").to_vec::<Card>("\n");
 
     let solution_1 = input.iter().map(|c| c.get_points()).sum::<u32>();
@@ -15,7 +15,7 @@ pub(crate) fn solve() -> (u32, u32) {
     }
     let solution_2 = input.iter().map(|c| c.quantity).sum::<u32>();
 
-    (solution_1, solution_2)
+    Ok((solution_1, solution_2))
 }
 
 #[derive(Debug)]
@@ -91,6 +91,7 @@ impl FromStr for Card {
 }
 
 #[test]
-fn run() {
-    assert_eq!(solve(), (20107, 8172507));
+fn run() -> Result<(), ()> {
+    assert_eq!(solve()?, (20107, 8172507));
+    Ok(())
 }

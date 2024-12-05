@@ -11,7 +11,7 @@ pub(crate) fn solve() -> Result<(u32, u32), ()> {
     let centers = wordsearch
         .search_word("MAS")
         .into_iter()
-        .filter(|(_, _, (a, b))| (b-a).abs() != 1)
+        .filter(|(_, _, (a, b))| (b - a).abs() != 1)
         .map(|(i, j, (di, dj))| (i as i32 + di, j as i32 + dj));
 
     let mut center_counts = HashMap::new();

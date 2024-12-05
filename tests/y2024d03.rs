@@ -19,7 +19,11 @@ pub(crate) fn solve() -> Result<(u32, u32), ()> {
     }
 
     let solution_1 = muls.iter().map(|mul| mul.x * mul.y).sum::<u32>();
-    let solution_2 = muls.iter().filter(|mul| mul.enabled).map(|mul| mul.x * mul.y).sum::<u32>();
+    let solution_2 = muls
+        .iter()
+        .filter(|mul| mul.enabled)
+        .map(|mul| mul.x * mul.y)
+        .sum::<u32>();
 
     Ok((solution_1, solution_2))
 }
@@ -29,8 +33,6 @@ struct Mul {
     y: u32,
     enabled: bool,
 }
-
-
 
 #[test]
 fn run() -> Result<(), ()> {

@@ -20,14 +20,17 @@ struct Report {
 
 impl Report {
     fn is_safe(levels: &Vec<i32>) -> bool {
-        let is_increasing = levels.windows(2).all(|w| w[0] < w[1]);
-        let is_decreasing = levels.windows(2).all(|w| w[0] > w[1]);
+        let mut is_increasing = true;
+        let mut is_decreasing = true;
 
-        // if the other conditions hold then maybe i can check only the first and the last values (using the len of the levels)
-        // the <= is already granted by the < / > (without =) in the previous checks
-        let is_adjacent_diff_valid = levels
-            .windows(2)
-            .all(|w| (w[0] - w[1]).abs() >= 1 && (w[0] - w[1]).abs() <= 3);
+        let is_adjacent_diff_valid = levels.windows(2).all(|w| {
+            if w[0] < w[1] {
+                is_decreasing = false;
+            } else if w[0] > w[1] {
+                is_increasing = false;
+            }
+            (w[0] - w[1]).abs() >= 1 && (w[0] - w[1]).abs() <= 3
+        });
 
         (is_increasing || is_decreasing) && is_adjacent_diff_valid
     }

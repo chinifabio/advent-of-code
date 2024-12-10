@@ -1,6 +1,6 @@
 use std::ops::{Index, IndexMut};
 
-use super::point::Point;
+use super::point::Vec2;
 
 #[derive(Debug, Clone)]
 pub struct Grid<T> {
@@ -42,13 +42,13 @@ impl<T> Grid<T> {
         }
     }
 
-    pub fn contains(&self, point: &Point) -> bool {
+    pub fn contains(&self, point: &Vec2) -> bool {
         point.x >= 0 && point.x < self.width as i32 && point.y >= 0 && point.y < self.height as i32
     }
 
-    pub fn iter_positions(&self) -> impl Iterator<Item = Point> + use<'_, T> {
+    pub fn iter_positions(&self) -> impl Iterator<Item = Vec2> + use<'_, T> {
         (0..self.height).flat_map(move |y| {
-            (0..self.width).map(move |x| Point {
+            (0..self.width).map(move |x| Vec2 {
                 x: x as i32,
                 y: y as i32,
             })
@@ -56,17 +56,17 @@ impl<T> Grid<T> {
     }
 }
 
-impl<T> Index<Point> for Grid<T> {
+impl<T> Index<Vec2> for Grid<T> {
     type Output = T;
 
-    fn index(&self, index: Point) -> &Self::Output {
+    fn index(&self, index: Vec2) -> &Self::Output {
         assert!(self.contains(&index), "Point not in grid");
         &self.data[index.y as usize * self.width + index.x as usize]
     }
 }
 
-impl<T> IndexMut<Point> for Grid<T> {
-    fn index_mut(&mut self, index: Point) -> &mut Self::Output {
+impl<T> IndexMut<Vec2> for Grid<T> {
+    fn index_mut(&mut self, index: Vec2) -> &mut Self::Output {
         assert!(self.contains(&index), "Point not in grid");
         &mut self.data[index.y as usize * self.width + index.x as usize]
     }
